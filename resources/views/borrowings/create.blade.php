@@ -1,12 +1,12 @@
 @extends('layout')
 
 @section('content')
-    <h2>New Borrowing</h2>
+    <h2><i class="fas fa-handshake"></i> New Borrowing</h2>
 
     <form action="{{ route('borrowings.store') }}" method="POST">
         @csrf
 
-        <label for="member_id">Member</label>
+        <label for="member_id"><i class="fas fa-user"></i> Member</label>
         <select id="member_id" name="member_id" required>
             <option value="">Select member</option>
             @foreach($members as $member)
@@ -16,7 +16,7 @@
             @endforeach
         </select>
 
-        <label for="book_id">Book</label>
+        <label for="book_id"><i class="fas fa-book"></i> Book</label>
         <select id="book_id" name="book_id" required>
             <option value="">Select book</option>
             @foreach($books as $book)
@@ -26,12 +26,12 @@
             @endforeach
         </select>
 
-        <label for="borrowing_date">Borrowing Date</label>
+        <label for="borrowing_date"><i class="fas fa-calendar"></i> Borrowing Date</label>
         <input type="date" id="borrowing_date" name="borrowing_date" value="{{ old('borrowing_date') }}" required>
 
-        <label for="return_date">Return Date</label>
+        <label for="return_date"><i class="fas fa-calendar-check"></i> Return Date</label>
         <input type="date" id="return_date" name="return_date" value="{{ old('return_date') }}">
 
-        <button type="submit">Save borrowing</button>
+        <button type="submit"><i class="fas fa-save"></i> Save borrowing</button>
     </form>
 @endsection
