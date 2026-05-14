@@ -1,24 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Student;
-
-
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowingController;
 
 Route::get('/', function () {
-
-    return view('welcome'); 
-
+    return view('home');
 });
 
-
-
-Route::get('/welcome', function() {
-
-    // passing student data to the view from models
-
-        $students = Student::all(); // storing all students data in $students variable
-    return view('hello', compact('students')); // passing $students variable to the view hello.blade.php
-
-});
+Route::resource('members', MemberController::class);
+Route::resource('books', BookController::class);
+Route::resource('borrowings', BorrowingController::class);
 
