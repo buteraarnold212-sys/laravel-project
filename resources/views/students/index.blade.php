@@ -97,6 +97,7 @@
         transition: all 0.18s ease;
         border: none;
         line-height: 1;
+        font-family: inherit;
     }
 
     .btn--primary {
@@ -210,6 +211,7 @@
         letter-spacing: 0.6px;
         color: #6b7280;
         border-bottom: 1px solid #e5e7eb;
+        white-space: nowrap;
     }
 
     tbody tr {
@@ -235,7 +237,7 @@
         color: #111827;
     }
 
-    /* Member ID badge */
+    /* Student ID badge */
     td:first-child strong {
         display: inline-block;
         background: #eff6ff;
@@ -246,6 +248,46 @@
         font-weight: 700;
     }
 
+    /* Grade badge */
+    .grade-badge {
+        display: inline-block;
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    /* Email & date muted styling */
+    .text-muted {
+        color: #6b7280;
+        font-size: 0.87rem;
+    }
+
+    /* Avatar initials */
+    .student-cell {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+    }
+
+    .student-avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: uppercase;
+    }
+
     /* Actions column */
     .actions-cell {
         display: flex;
@@ -254,7 +296,7 @@
     }
 
     /* ── Responsive ───────────────────────────────────── */
-    @media (max-width: 680px) {
+    @media (max-width: 768px) {
         .welcome-card {
             flex-direction: column;
             text-align: center;
@@ -301,56 +343,38 @@
 
     <div class="welcome-card">
         <div class="welcome-card__icon">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-user-graduate"></i>
         </div>
         <div class="welcome-card__body">
-            <h1 class="welcome-card__title">Library Members</h1>
-            <p class="welcome-card__subtitle">Browse and manage all registered library members. Update contact information and track memberships.</p>
-            <a href="{{ route('members.create') }}" class="btn btn--primary">
+            <h1 class="welcome-card__title">Students Management</h1>
+            <p class="welcome-card__subtitle">Manage student records, add new enrollments, and track academic progress.</p>
+            <a href="{{ route('students.create') }}" class="btn btn--primary">
                 <i class="fas fa-user-plus"></i>
-                Add Member
+                Add Student
             </a>
         </div>
     </div>
 
     <div class="table-container">
         <div class="table-header">
-            <h2 class="table-title">Members Directory</h2>
+            <h2 class="table-title">Students Directory</h2>
             <div class="table-header__right">
-                <form action="{{ route('members.index') }}" method="GET" style="display:flex; align-items:center; gap:0.5rem;">
-                    <input
-                        type="text"
-                        name="q"
-                        value="{{ request('q') }}"
-                        placeholder="Search members..."
-                        style="padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #e5e7eb; font-size:0.9rem; outline:none; min-width: 260px;"
-                    >
-                    <button type="submit" class="btn btn--secondary" style="padding:0.6rem 1rem;">
-                        <i class="fas fa-search"></i>
-                        Search
-                    </button>
-                    @if(request('q'))
-                        <a href="{{ route('members.index') }}" class="btn" style="background:#fff; color:#6b7280; border:1px solid #e5e7eb; padding:0.6rem 1rem;">
-                            Clear
-                        </a>
-                    @endif
-                </form>
-                <span style="color:#6b7280; font-weight:500;">Total: <strong style="color:#111827;">{{ $members->count() }}</strong></span>
-                <a href="{{ route('members.create') }}" class="btn btn--secondary">
+                <span style="color:#6b7280; font-weight:500;">Total: <strong style="color:#111827;">{{ $students->count() }}</strong></span>
+                <a href="{{ route('students.create') }}" class="btn btn--secondary">
                     <i class="fas fa-plus"></i>
-                    Add Member
+                    Add Student
                 </a>
             </div>
         </div>
 
-        @if($members->isEmpty())
+        @if($students->isEmpty())
             <div class="empty-state">
                 <i class="fas fa-inbox empty-state__icon"></i>
-                <p class="empty-state__heading">No members registered yet</p>
-                <p class="empty-state__sub">Start by adding your first library member</p>
-                <a href="{{ route('members.create') }}" class="btn btn--primary">
+                <p class="empty-state__heading">No students registered yet</p>
+                <p class="empty-state__sub">Start by adding your first student record</p>
+                <a href="{{ route('students.create') }}" class="btn btn--primary">
                     <i class="fas fa-plus"></i>
-                    Add First Member
+                    Add First Student
                 </a>
             </div>
         @else
@@ -359,24 +383,41 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Address</th>
+                        <th>Email</th>
                         <th>Phone</th>
+                        <th>Address</th>
+                        <th>Grade</th>
+                        <th>Enrollment Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($members as $member)
+                    @foreach($students as $student)
                         <tr>
-                            <td data-label="ID"><strong>#{{ $member->id }}</strong></td>
-                            <td data-label="Name"><strong>{{ $member->name }}</strong></td>
-                            <td data-label="Address">{{ $member->address }}</td>
-                            <td data-label="Phone">{{ $member->phone }}</td>
+                            <td data-label="ID"><strong>#{{ $student->id }}</strong></td>
+                            <td data-label="Name">
+                                <div class="student-cell">
+                                    <div class="student-avatar">
+                                        {{ mb_substr($student->name, 0, 2) }}
+                                    </div>
+                                    <strong>{{ $student->name }}</strong>
+                                </div>
+                            </td>
+                            <td data-label="Email"><span class="text-muted">{{ $student->email }}</span></td>
+                            <td data-label="Phone">{{ $student->phone }}</td>
+                            <td data-label="Address">{{ $student->address }}</td>
+                            <td data-label="Grade">
+                                <span class="grade-badge">{{ $student->grade }}</span>
+                            </td>
+                            <td data-label="Enrollment Date">
+                                <span class="text-muted">{{ $student->enrollment_date }}</span>
+                            </td>
                             <td data-label="Actions">
                                 <div class="actions-cell">
-                                    <a href="{{ route('members.edit', $member) }}" class="btn btn--secondary" style="padding:0.5rem 0.75rem; font-size:0.85rem;">
+                                    <a href="{{ route('students.edit', $student) }}" class="btn btn--secondary" style="padding:0.5rem 0.75rem; font-size:0.85rem;">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('members.destroy', $member) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                    <form action="{{ route('students.destroy', $student) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn--danger" style="padding:0.5rem 0.75rem; font-size:0.85rem;">

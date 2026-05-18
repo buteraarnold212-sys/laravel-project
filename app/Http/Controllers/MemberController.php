@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $members = Member::all();
+        $q = $request->get('q');
+
+        if ($q) {
+            $members = Member::where('name', 'like', "%{$q}%")
+                ->orWhere('address', 'like', "%{$q}%")
+                ->orWhere('phone', 'like', "%{$q}%")
+                ->get();
+        } else {
+            $members = Member::all();
+        }
+
         return view('members.index', compact('members'));
     }
 

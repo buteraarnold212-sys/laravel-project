@@ -14,7 +14,7 @@
 
     /* ── Page Wrapper ─────────────────────────────────── */
     .form-page {
-        max-width: 680px;
+        max-width: 760px;
         margin: 0 auto;
     }
 
@@ -31,9 +31,7 @@
         transition: color 0.15s ease;
     }
 
-    .back-link:hover {
-        color: #1d4ed8;
-    }
+    .back-link:hover { color: #1d4ed8; }
 
     /* ── Form Card ────────────────────────────────────── */
     .form-card {
@@ -58,11 +56,18 @@
     .form-card__header::before {
         content: '';
         position: absolute;
-        top: -30px;
-        right: -30px;
-        width: 140px;
-        height: 140px;
-        background: rgba(255, 255, 255, 0.08);
+        top: -30px; right: -30px;
+        width: 140px; height: 140px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+    }
+
+    .form-card__header::after {
+        content: '';
+        position: absolute;
+        bottom: -50px; right: 100px;
+        width: 100px; height: 100px;
+        background: rgba(255,255,255,0.05);
         border-radius: 50%;
     }
 
@@ -73,16 +78,14 @@
         width: 54px;
         height: 54px;
         min-width: 54px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255,255,255,0.2);
         border-radius: 50%;
         font-size: 1.35rem;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255,255,255,0.3);
         z-index: 1;
     }
 
-    .form-card__header-body {
-        z-index: 1;
-    }
+    .form-card__header-body { z-index: 1; }
 
     .form-card__title {
         font-size: 1.35rem;
@@ -98,9 +101,24 @@
     }
 
     /* ── Form Body ────────────────────────────────────── */
-    .form-card__body {
-        padding: 2rem;
+    .form-card__body { padding: 2rem; }
+
+    /* ── Section Label ────────────────────────────────── */
+    .form-section {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #9ca3af;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
     }
+
+    .form-section i { color: #93c5fd; }
 
     /* ── Form Grid ────────────────────────────────────── */
     .form-grid {
@@ -109,12 +127,14 @@
         gap: 1.25rem;
     }
 
-    /* ── Field Group ──────────────────────────────────── */
+    /* ── Form Group ───────────────────────────────────── */
     .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
     }
+
+    .form-group--full { grid-column: 1 / -1; }
 
     .form-label {
         font-size: 0.82rem;
@@ -130,9 +150,7 @@
     }
 
     /* ── Input with Icon ──────────────────────────────── */
-    .input-wrapper {
-        position: relative;
-    }
+    .input-wrapper { position: relative; }
 
     .input-wrapper .input-icon {
         position: absolute;
@@ -140,14 +158,14 @@
         top: 50%;
         transform: translateY(-50%);
         color: #9ca3af;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         pointer-events: none;
         transition: color 0.15s ease;
     }
 
     .input-wrapper input {
         width: 100%;
-        padding: 0.7rem 0.85rem 0.7rem 2.5rem;
+        padding: 0.72rem 0.85rem 0.72rem 2.5rem;
         border: 1.5px solid #e5e7eb;
         border-radius: 9px;
         font-size: 0.92rem;
@@ -164,19 +182,20 @@
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
     }
 
-    .input-wrapper input:focus ~ .input-icon {
-        color: #3b82f6;
-    }
+    .input-wrapper input:focus ~ .input-icon { color: #3b82f6; }
 
-    .input-wrapper input.is-invalid {
-        border-color: #ef4444;
-    }
+    .input-wrapper input.is-invalid { border-color: #ef4444; }
 
     .input-wrapper input.is-invalid:focus {
         box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
     }
 
-    /* Error text */
+    .input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    /* Error */
     .field-error {
         font-size: 0.8rem;
         color: #ef4444;
@@ -240,59 +259,56 @@
     }
 
     /* ── Responsive ───────────────────────────────────── */
-    @media (max-width: 560px) {
-        .form-card__body {
-            padding: 1.25rem;
-        }
-
-        .form-card__header {
-            padding: 1.25rem;
-        }
-
+    @media (max-width: 640px) {
+        .form-card__body { padding: 1.25rem; }
+        .form-card__header { padding: 1.25rem; }
         .form-actions {
             flex-direction: column;
             align-items: stretch;
         }
-
-        .form-actions .btn {
-            justify-content: center;
-        }
+        .form-actions .btn { justify-content: center; }
     }
 </style>
 
     @php
         $fields = [
-            ['type'=>'text','name'=>'name','id'=>'name','label'=>'Name','iconClass'=>'fas fa-user','value'=>null,'required'=>true],
-            ['type'=>'text','name'=>'address','id'=>'address','label'=>'Address','iconClass'=>'fas fa-map-marker-alt','value'=>null,'required'=>true],
-            ['type'=>'text','name'=>'phone','id'=>'phone','label'=>'Phone','iconClass'=>'fas fa-phone','value'=>null,'required'=>true],
+            ['type'=>'text','name'=>'name','id'=>'name','label'=>'Name','iconClass'=>'fas fa-user','value'=>$student->name,'required'=>true],
+            ['type'=>'email','name'=>'email','id'=>'email','label'=>'Email','iconClass'=>'fas fa-envelope','value'=>$student->email,'required'=>true],
+            ['type'=>'text','name'=>'phone','id'=>'phone','label'=>'Phone','iconClass'=>'fas fa-phone','value'=>$student->phone,'required'=>true],
+            ['type'=>'text','name'=>'address','id'=>'address','label'=>'Address','iconClass'=>'fas fa-map-marker-alt','value'=>$student->address,'required'=>true],
+            ['type'=>'text','name'=>'grade','id'=>'grade','label'=>'Grade','iconClass'=>'fas fa-graduation-cap','value'=>$student->grade,'required'=>true],
+            ['type'=>'date','name'=>'enrollment_date','id'=>'enrollment_date','label'=>'Enrollment Date','iconClass'=>'fas fa-calendar','value'=>$student->enrollment_date,'required'=>true],
         ];
     @endphp
 
     <div class="form-page">
 
-        <a href="{{ route('members.index') }}" class="back-link">
+        <a href="{{ route('students.index') }}" class="back-link">
             <i class="fas fa-arrow-left"></i>
-            Back to Members
+            Back to Students
         </a>
 
         <div class="form-card">
             <div class="form-card__header">
                 <div class="form-card__icon">
-                    <i class="fas fa-user-plus"></i>
+                    <i class="fas fa-user-edit"></i>
                 </div>
                 <div class="form-card__header-body">
-                    <h1 class="form-card__title">Add Member</h1>
-                    <p class="form-card__subtitle">Enter member details so students can borrow library books.</p>
+                    <h1 class="form-card__title">Edit Student</h1>
+                    <p class="form-card__subtitle">Update student profile details and enrollment date.</p>
                 </div>
             </div>
 
             <div class="form-card__body">
-                <form action="{{ route('members.store') }}" method="POST">
+                <form action="{{ route('students.update', $student) }}" method="POST">
                     @csrf
+                    @method('PUT')
+
+                    <p class="form-section"><i class="fas fa-id-card"></i> Personal Information</p>
 
                     <div class="form-grid">
                         @foreach($fields as $field)
-                            <div class="form-group">
+                            <div class="form-group {{ $field['name'] === 'address' ? 'form-group--full' : '' }}">
                                 <label class="form-label" for="{{ $field['id'] }}">
                                     {{ $field['label'] }}
                                     @if(!empty($field['required']))<span class="required">*</span>@endif
@@ -303,7 +319,6 @@
                                         name="{{ $field['name'] }}"
                                         id="{{ $field['id'] }}"
                                         value="{{ old($field['name'], $field['value']) }}"
-                                        placeholder="{{ $field['label'] }}"
                                         {{ !empty($field['required']) ? 'required' : '' }}
                                         class="{{ $errors->has($field['name']) ? 'is-invalid' : '' }}"
                                     >
@@ -324,9 +339,9 @@
                     <div class="form-actions">
                         <button type="submit" class="btn btn--primary">
                             <i class="fas fa-save"></i>
-                            Save Member
+                            Update Student
                         </button>
-                        <a href="{{ route('members.index') }}" class="btn btn--secondary">Cancel</a>
+                        <a href="{{ route('students.index') }}" class="btn btn--secondary">Cancel</a>
                     </div>
                 </form>
             </div>

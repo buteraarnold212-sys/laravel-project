@@ -14,7 +14,7 @@
 
     /* ── Page Wrapper ─────────────────────────────────── */
     .form-page {
-        max-width: 680px;
+        max-width: 760px;
         margin: 0 auto;
     }
 
@@ -66,6 +66,17 @@
         border-radius: 50%;
     }
 
+    .form-card__header::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        right: 100px;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+    }
+
     .form-card__icon {
         display: flex;
         align-items: center;
@@ -102,6 +113,30 @@
         padding: 2rem;
     }
 
+    /* ── Section Label ────────────────────────────────── */
+    .form-section {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #9ca3af;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 1.1rem;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .form-section:first-of-type {
+        margin-top: 0;
+    }
+
+    .form-section i {
+        color: #93c5fd;
+    }
+
     /* ── Form Grid ────────────────────────────────────── */
     .form-grid {
         display: grid;
@@ -109,11 +144,19 @@
         gap: 1.25rem;
     }
 
-    /* ── Field Group ──────────────────────────────────── */
+    .form-grid--3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* ── Form Group ───────────────────────────────────── */
     .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
+    }
+
+    .form-group--full {
+        grid-column: 1 / -1;
     }
 
     .form-label {
@@ -140,14 +183,14 @@
         top: 50%;
         transform: translateY(-50%);
         color: #9ca3af;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         pointer-events: none;
         transition: color 0.15s ease;
     }
 
     .input-wrapper input {
         width: 100%;
-        padding: 0.7rem 0.85rem 0.7rem 2.5rem;
+        padding: 0.72rem 0.85rem 0.72rem 2.5rem;
         border: 1.5px solid #e5e7eb;
         border-radius: 9px;
         font-size: 0.92rem;
@@ -174,6 +217,11 @@
 
     .input-wrapper input.is-invalid:focus {
         box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+    }
+
+    .input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+        opacity: 0.5;
+        cursor: pointer;
     }
 
     /* Error text */
@@ -240,13 +288,17 @@
     }
 
     /* ── Responsive ───────────────────────────────────── */
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
         .form-card__body {
             padding: 1.25rem;
         }
 
         .form-card__header {
             padding: 1.25rem;
+        }
+
+        .form-grid--3 {
+            grid-template-columns: 1fr;
         }
 
         .form-actions {
@@ -263,16 +315,19 @@
     @php
         $fields = [
             ['type'=>'text','name'=>'name','id'=>'name','label'=>'Name','iconClass'=>'fas fa-user','value'=>null,'required'=>true],
-            ['type'=>'text','name'=>'address','id'=>'address','label'=>'Address','iconClass'=>'fas fa-map-marker-alt','value'=>null,'required'=>true],
+            ['type'=>'email','name'=>'email','id'=>'email','label'=>'Email','iconClass'=>'fas fa-envelope','value'=>null,'required'=>true],
             ['type'=>'text','name'=>'phone','id'=>'phone','label'=>'Phone','iconClass'=>'fas fa-phone','value'=>null,'required'=>true],
+            ['type'=>'text','name'=>'address','id'=>'address','label'=>'Address','iconClass'=>'fas fa-map-marker-alt','value'=>null,'required'=>true],
+            ['type'=>'text','name'=>'grade','id'=>'grade','label'=>'Grade','iconClass'=>'fas fa-graduation-cap','value'=>null,'required'=>true],
+            ['type'=>'date','name'=>'enrollment_date','id'=>'enrollment_date','label'=>'Enrollment Date','iconClass'=>'fas fa-calendar','value'=>null,'required'=>true],
         ];
     @endphp
 
     <div class="form-page">
 
-        <a href="{{ route('members.index') }}" class="back-link">
+        <a href="{{ route('students.index') }}" class="back-link">
             <i class="fas fa-arrow-left"></i>
-            Back to Members
+            Back to Students
         </a>
 
         <div class="form-card">
@@ -281,18 +336,20 @@
                     <i class="fas fa-user-plus"></i>
                 </div>
                 <div class="form-card__header-body">
-                    <h1 class="form-card__title">Add Member</h1>
-                    <p class="form-card__subtitle">Enter member details so students can borrow library books.</p>
+                    <h1 class="form-card__title">Add Student</h1>
+                    <p class="form-card__subtitle">Register a new student and keep records up to date.</p>
                 </div>
             </div>
 
             <div class="form-card__body">
-                <form action="{{ route('members.store') }}" method="POST">
+                <form action="{{ route('students.store') }}" method="POST">
                     @csrf
+
+                    <p class="form-section"><i class="fas fa-id-card"></i> Personal Information</p>
 
                     <div class="form-grid">
                         @foreach($fields as $field)
-                            <div class="form-group">
+                            <div class="form-group {{ $field['name'] === 'address' ? 'form-group--full' : '' }}">
                                 <label class="form-label" for="{{ $field['id'] }}">
                                     {{ $field['label'] }}
                                     @if(!empty($field['required']))<span class="required">*</span>@endif
@@ -324,9 +381,9 @@
                     <div class="form-actions">
                         <button type="submit" class="btn btn--primary">
                             <i class="fas fa-save"></i>
-                            Save Member
+                            Save Student
                         </button>
-                        <a href="{{ route('members.index') }}" class="btn btn--secondary">Cancel</a>
+                        <a href="{{ route('students.index') }}" class="btn btn--secondary">Cancel</a>
                     </div>
                 </form>
             </div>

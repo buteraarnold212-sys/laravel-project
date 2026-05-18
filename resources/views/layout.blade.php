@@ -1,380 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ config('app.name', 'EduTrack') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-        :root {
-            --primary: #2c3e50;
-            --primary-light: #34495e;
-            --accent: #16a085;
-            --accent-light: #1abc9c;
-            --danger: #e74c3c;
-            --danger-light: #ec7063;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --bg: #ecf0f1;
-            --bg-light: #ffffff;
-            --text: #2c3e50;
-            --text-light: #7f8c8d;
-            --border: #bdc3c7;
-            --border-light: #e8eaed;
-        }
+    <style>
+        /* ══ Reset ══════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background-color: var(--bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
             min-height: 100vh;
-            padding: 20px;
-            color: var(--text);
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: var(--bg-light);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-        }
-
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 35px 30px;
-            border-bottom: 3px solid var(--accent);
-        }
-
-        header h1 {
-            font-size: 2.2em;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        nav {
-            background-color: #ffffff;
-            padding: 0;
+        /* ══ Navbar ═════════════════════════════════════ */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
             display: flex;
-            gap: 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            padding: 16px 24px;
-            border-bottom: 3px solid transparent;
-            flex: 1;
-            text-align: center;
-        }
-
-        nav a:hover {
-            background-color: #f5f7fa;
-            border-bottom-color: var(--accent);
-            color: var(--accent);
-        }
-
-        main {
-            padding: 35px 30px;
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-bottom: 25px;
-            font-size: 1.8em;
-            font-weight: 600;
-        }
-
-        .success {
-            background-color: #d5f4e6;
-            color: #0b5345;
-            padding: 14px 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--success);
-            font-size: 0.95em;
-        }
-
-        .error {
-            background-color: #fadbd8;
-            color: #78281f;
-            padding: 14px 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--danger);
-        }
-
-        .error ul {
-            margin-left: 20px;
-            margin-top: 10px;
-        }
-
-        .error li {
-            margin: 6px 0;
-            font-size: 0.95em;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        th {
-            background-color: var(--primary);
-            color: white;
-            padding: 14px 16px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            border: none;
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-light);
-            font-size: 0.95em;
-        }
-
-        tr {
-            transition: background-color 0.15s ease;
-        }
-
-        tbody tr:hover {
-            background-color: #f9fafb;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .actions {
-            display: flex;
-            gap: 8px;
             align-items: center;
+            justify-content: space-between;
+            height: 66px;
+            padding: 0 2.5rem;
+            background: #0f172a;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            gap: 2rem;
         }
 
-        .actions a, .actions button {
-            padding: 7px 12px;
-            border-radius: 4px;
-            font-size: 0.85em;
+        /* Brand */
+        .navbar__brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .navbar__brand i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+            border-radius: 10px;
+            font-size: 1.05rem;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.55);
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .navbar__brand:hover i {
+            transform: rotate(-8deg) scale(1.08);
+        }
+
+        .navbar__brand span {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.4px;
+            white-space: nowrap;
+        }
+
+        /* Center links */
+        .navbar__center {
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .navlink {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.52rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
             font-weight: 500;
-        }
-
-        .actions a {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .actions a:hover {
-            background-color: var(--primary-light);
-            box-shadow: 0 2px 4px rgba(44, 62, 80, 0.15);
-        }
-
-        .actions button {
-            background-color: var(--danger);
-            color: white;
-        }
-
-        .actions button:hover {
-            background-color: #c0392b;
-            box-shadow: 0 2px 4px rgba(231, 76, 60, 0.15);
-        }
-
-        .btn-add {
-            display: inline-block;
-            background-color: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
+            color: rgba(255,255,255,0.48);
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border: none;
+            transition: all 0.17s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .navlink i {
+            font-size: 0.9rem;
+            transition: transform 0.17s ease;
+        }
+
+        .navlink:hover {
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.92);
+        }
+
+        .navlink:hover i {
+            transform: scale(1.15);
+        }
+
+        .navlink--active {
+            background: rgba(59,130,246,0.2);
+            color: #93c5fd;
+            font-weight: 700;
+        }
+
+        .navlink--active i {
+            color: #60a5fa;
+        }
+
+        .navlink--active::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2.5px;
+            background: #3b82f6;
+            border-radius: 99px;
+        }
+
+        /* Right side */
+        .navbar__right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .navbar__avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: #fff;
+            font-size: 0.73rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            border: 2px solid rgba(255,255,255,0.12);
+            box-shadow: 0 2px 8px rgba(29,78,216,0.4);
+            transition: transform 0.17s ease, border-color 0.17s ease, box-shadow 0.17s ease;
         }
 
-        .btn-add:hover {
-            background-color: var(--primary-light);
-            box-shadow: 0 2px 4px rgba(44, 62, 80, 0.15);
+        .navbar__avatar:hover {
+            transform: scale(1.1);
+            border-color: rgba(255,255,255,0.35);
+            box-shadow: 0 4px 14px rgba(29,78,216,0.55);
         }
 
-        form {
-            background-color: #f9fafb;
-            padding: 28px;
-            border-radius: 6px;
-            max-width: 550px;
-            margin: 20px 0;
-            border: 1px solid var(--border-light);
+        /* ══ Page Content ═══════════════════════════════ */
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.25rem 2.5rem;
         }
 
-        label {
-            display: block;
-            margin-top: 16px;
-            margin-bottom: 7px;
+        /* ══ Flash Messages ══════════════════════════════ */
+        .flash {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1rem 1.35rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
             font-weight: 500;
-            color: var(--text);
-            font-size: 0.9em;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px 12px;
-            margin-bottom: 0;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            background-color: white;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(22, 160, 133, 0.1);
-            background-color: white;
-        }
-
-        button {
-            margin-top: 18px;
-            padding: 11px 28px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: var(--primary-light);
-            box-shadow: 0 2px 4px rgba(44, 62, 80, 0.15);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        p {
-            color: var(--text-light);
+            margin-bottom: 1.75rem;
             line-height: 1.6;
-            margin: 15px 0;
-            font-size: 0.95em;
+            animation: flashIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        ul {
-            margin-left: 20px;
-            line-height: 1.7;
+        .flash i:first-child {
+            font-size: 1.05rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
         }
 
-        li {
-            margin: 8px 0;
-            font-size: 0.95em;
+        /* Success */
+        .flash--success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #166534;
+            border: 1px solid #86efac;
         }
 
-        li a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
+        .flash--success i { color: #22c55e; }
+
+        /* Error */
+        .flash--error {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            flex-direction: column;
+            gap: 0.4rem;
         }
 
-        li a:hover {
-            color: var(--primary);
-            text-decoration: underline;
+        .flash--error .flash__title {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-weight: 700;
         }
 
-        i {
-            margin-right: 6px;
-            display: inline-block;
-            min-width: 1em;
+        .flash--error i { color: #ef4444; }
+
+        .flash--error ul {
+            margin-left: 1.6rem;
+            font-weight: 600;
         }
 
-        nav a i {
-            margin-right: 8px;
+        .flash--error ul li { margin-top: 0.2rem; }
+
+        @keyframes flashIn {
+            from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .success i, .error i {
-            margin-right: 8px;
-        }
+        /* ══ Scrollbar ══════════════════════════════════ */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-        label i {
-            color: var(--accent);
-            margin-right: 8px;
-        }
+        /* ══ Responsive ═════════════════════════════════ */
+        @media (max-width: 860px) {
+            .navbar {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 0.8rem 1.25rem;
+                gap: 0.6rem;
+            }
 
-        th i {
-            margin-right: 6px;
-            opacity: 0.9;
-        }
+            .navbar__center {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.2rem;
+                gap: 0.1rem;
+                scrollbar-width: none;
+            }
 
-        h2 i {
-            margin-right: 10px;
-            color: var(--accent);
-        }
+            .navbar__center::-webkit-scrollbar { display: none; }
 
-        button i, .btn-add i {
-            margin-right: 8px;
-        }
+            .navlink {
+                font-size: 0.82rem;
+                padding: 0.42rem 0.7rem;
+            }
 
-        .actions i {
-            margin-right: 5px;
+            .navlink--active::after { display: none; }
+
+            .page { padding: 1.5rem 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-book"></i> Library Management System</h1>
-        </header>
+    <nav class="navbar">
+        <a href="{{ route('home') }}" class="navbar__brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>EduTrack</span>
+        </a>
 
-        <nav>
-            <a href="{{ route('members.index') }}"><i class="fas fa-users"></i> Members</a>
-            <a href="{{ route('books.index') }}"><i class="fas fa-book-open"></i> Books</a>
-            <a href="{{ route('borrowings.index') }}"><i class="fas fa-sync-alt"></i> Borrowings</a>
-        </nav>
+        <div class="navbar__center">
+            <a href="{{ route('home') }}" class="navlink {{ request()->routeIs('home') ? 'navlink--active' : '' }}">
+                <i class="fas fa-house"></i>
+                Dashboard
+            </a>
+            <a href="{{ route('students.index') }}" class="navlink {{ request()->routeIs('students.*') ? 'navlink--active' : '' }}">
+                <i class="fas fa-user-graduate"></i>
+                Students
+            </a>
+            <a href="{{ route('members.index') }}" class="navlink {{ request()->routeIs('members.*') ? 'navlink--active' : '' }}">
+                <i class="fas fa-users"></i>
+                Members
+            </a>
+            <a href="{{ route('books.index') }}" class="navlink {{ request()->routeIs('books.*') ? 'navlink--active' : '' }}">
+                <i class="fas fa-book"></i>
+                Books
+            </a>
+            <a href="{{ route('borrowings.index') }}" class="navlink {{ request()->routeIs('borrowings.*') ? 'navlink--active' : '' }}">
+                <i class="fas fa-handshake"></i>
+                Borrowings
+            </a>
+        </div>
 
-        <main>
-            @if(session('success'))
-                <div class="success"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
-            @endif
+        <div class="navbar__right">
+            <div class="navbar__avatar" title="Admin">AD</div>
+        </div>
+    </nav>
 
-            @if($errors->any())
-                <div class="error">
-                    <strong><i class="fas fa-exclamation-circle"></i> Please fix the following errors:</strong>
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+    <main class="page">
+        @if(session('success'))
+            <div class="flash flash--success">
+                <i class="fas fa-check-circle"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="flash flash--error">
+                <div class="flash__title">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Please fix the following errors:
                 </div>
-            @endif
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-            @yield('content')
-        </main>
-    </div>
+        @yield('content')
+    </main>
 </body>
 </html>
